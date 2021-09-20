@@ -46,8 +46,8 @@ bool non_delim_character(char c){
    space-separated word*/
 
 char *word_start(char* str){
-  for(i = 0;*(str + i)!='\0';i++){
-    if(non_delim_character(*(str+1)){
+  for(int i = 0;*(str + i)!='\0';i++){
+    if(non_delim_character(*str+1){
 	return str + i;
       }
       }
@@ -62,9 +62,9 @@ char *word_start(char* str){
    terminated string*/
 
 char *end_word(char* str){
-  char *first = word_start(str)
-    for(i = 0;*(first + 1) != '\0';i++){
-      if(delim_character(*(first + i + 1)){
+  char *first = word_start(str);
+    for(int i = 0;*(first + 1) != '\0';i++){
+      if(delim_character(*first + i + 1){
 	  return first + 1;
 	}
 	}
@@ -75,9 +75,16 @@ char *end_word(char* str){
 // counts the number of words or tokens
 
 int count_tokens(char* str){
-
-
-
+  int count = 0;
+  for (int i =0; *(str +1) != '\0'; i++){
+    if(non_delim_character(*str+i){
+	if(delim_character(*str+i+ 1){
+	    count++;
+	  }
+	
+	  }
+     }
+      return count;
 
 
 }

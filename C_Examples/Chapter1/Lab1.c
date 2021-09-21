@@ -23,8 +23,6 @@ bool delim_character(char c){
 
 }
 
-
-
 /* Return true (non-zero) if c is a non-whitespace
 
    character (not tab or space).
@@ -124,15 +122,15 @@ char** tokenize(char* str){
 
 
 void print_all_tokens(char** tokens){
-  for(int i =0; *(tokens + 1)!= '\0'; i++){
-    printf("%s\n", *(tokens +i)); 
+  for(int i =0; *(tokens + i)!= '\0'; i++){
+    printf( "token[%d]=%s\n",i, *(tokens +i)); 
   }
 }
 
 
 
  int main(){
-   char test1[] = "example number one";
+   char test1[] = "test one tokenizer lab";
    print_all_tokens(tokenize(test1));
    return 0;
      }
@@ -152,3 +150,4 @@ void print_all_tokens(char** tokens){
      tokens[2] = "string"
 
      token
+*/

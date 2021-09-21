@@ -4,6 +4,8 @@
 
 #include <stdbool.h>
 
+#include <string.h>
+
 /* Return true (non-zero) if c is a whitespace characer
 
    ('\t' or ' ').
@@ -11,7 +13,7 @@
    Zero terminators are not printable (therefore false) */
 
 bool delim_character(char c){
-  if(c == ' ' || c == '\t'){
+  if(c == ' ' || c == '\t' || c == '\0'){
     return true;
   }else{
     return false;
@@ -30,7 +32,7 @@ bool delim_character(char c){
    Zero terminators are not printable (therefore false) */
 
 bool non_delim_character(char c){
-  if(c == ' ' || c == '\t'){
+  if(c == ' ' || c == '\t' || c == '\0'){
     return false;
   }else{
     return true;
@@ -47,7 +49,7 @@ bool non_delim_character(char c){
 
 char *word_start(char* str){
   for(int i = 0;*(str + i)!='\0';i++){
-    if(non_delim_character(*str+1){
+    if(non_delim_character(*(str+1))){
 	return str + i;
       }
       }
@@ -63,8 +65,8 @@ char *word_start(char* str){
 
 char *end_word(char* str){
   char *first = word_start(str);
-    for(int i = 0;*(first + 1) != '\0';i++){
-      if(delim_character(*first + i + 1){
+    for(int i = 0;*(first +i) != '\0';i++){
+      if(delim_character(*(first + i + 1))){
 	  return first + 1;
 	}
 	}
@@ -76,9 +78,9 @@ char *end_word(char* str){
 
 int count_tokens(char* str){
   int count = 0;
-  for (int i =0; *(str +1) != '\0'; i++){
-    if(non_delim_character(*str+i){
-	if(delim_character(*str+i+ 1){
+  for (int i =0; *(str +i) != '\0'; i++){
+    if(non_delim_character(*(str+i))){
+      if(delim_character(*(str+i+ 1))){
 	    count++;
 	  }
 	
@@ -89,7 +91,12 @@ int count_tokens(char* str){
 
 }
 char *copy_str(char *inStr, short len){
-
+  char *temp = (char *)malloc(len);
+  for (int i =0; i<len; i++){
+    *(temp+i) = *(inStr + i);
+  }
+  *(temp + len) = '\n';
+  return temp;
 
 
 }
@@ -97,6 +104,18 @@ char *copy_str(char *inStr, short len){
 
 
 char** tokenize(char* str){
+  char tokens = count_tokens(str) + 1;
+  char **token_array = (char **)malloc(sizeof(char *) *(tokens+1));
+
+
+  int i =0;
+  token_array[i] = strtok(str, " ");
+  for(i = 1; i< tokens; i++){
+    token_array[i] = strtok(NULL, " ");
+
+  }
+  token_array[i++] = '\0';
+  return token_array;
 
 }
 
@@ -105,8 +124,18 @@ char** tokenize(char* str){
 
 
 void print_all_tokens(char** tokens){
-
+  for(int i =0; *(tokens + 1)!= '\0'; i++){
+    printf("%s\n", *(tokens +i)); 
+  }
 }
+
+
+
+ int main(){
+   char test1[] = "example number one";
+   print_all_tokens(tokenize(test1));
+   return 0;
+     }
 
 
 

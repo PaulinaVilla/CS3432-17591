@@ -234,7 +234,7 @@ char** tokenize(char* str){
 
 void print_all_tokens(char** tokens){
 
-  for(i=0; *(tokens + i)!= '\0'; i++){
+  for(int i=0; *(tokens + i)!= '\0'; i++){
 
     printf( "token[%d]=%s\n",i, *(tokens +i));
 
@@ -246,7 +246,7 @@ void print_all_tokens(char** tokens){
 
 
 
-
+/*
 
 int main(){
 
@@ -257,3 +257,4 @@ int main(){
   return 0;
 
 }
+*/

@@ -31,7 +31,57 @@ void init_regs(){
  * as a parameter to this function.
  */
 bool interpret(char* instr){
+	
 	return true;
+}
+
+
+long getOpcode(char * instr){
+	char **token_array = (char **)malloc(sizeof(char *) * (4 + 1));
+  // tokenize(instr);
+	token_array = tokenize(instr);
+	long opcode;
+   //print_all_tokens(tokenize(instr));
+	if((strcomp(token_array[0], "LW"))|| (strcomp(token_array[0], "ADDI"))){
+		opcode = "10000011";
+	}	
+	if(strcomp(token_array[0], "SW")){
+		opcode = "0100011";
+	}
+	if(strcomp(token_array[0], "ADD")){
+		opcode = "0110011";
+	}
+		
+	return opcode;
+
+//get register number from user
+//get value in that register and store it in the given register 
+		
+
+
+   
+}
+
+
+int strcomp(char *str1, char *str2){
+	int len1 =0; 
+	int len2 = 0;
+	//make for loop with couhnter for both and compare counters and then compare string
+	for(int i =0; *(str1+i)!='\0';i++){
+		len1++;
+	}
+	for(int i =0; *(str2+i)!='\0';i++){
+		len2++;
+	}
+	
+	if (len1 == len2){
+		for(int i =0; i< len1; i++){
+			if(*(str1+i) == *(str2+i)){
+				return 1;
+			}	
+		}
+	}return 0;
+	
 }
 
 
@@ -60,11 +110,17 @@ void write_read_demo(){
  *
  */
 int main(){
+	char name[] = "LW X7 1000(X5)";
+	printf("%ld\n", getOpcode(name));
+	//printf("%d\n", interpret(name)); 
 	// Do not write any code between init_regs
 	init_regs(); // DO NOT REMOVE THIS LINE
+	//char str1[] = "hey";
+	//char str2[] = "heey";
+	//printf("%d\n", strcomp(str1,str2));
 
 	// Below is a sample program to a write-read. Overwrite this with your own code.
 	write_read_demo();
-
-	return 0;
+	
+        
 }

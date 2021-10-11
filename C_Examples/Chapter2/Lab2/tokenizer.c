@@ -192,25 +192,19 @@ char *copy_str(char *inStr, short len){
 
 
 
-char** tokenize(char* str){
+char** tokenize(char* str, char delim []){
 
   char tokens = count_tokens(str) + 1;
 
   char **token_array = (char **)malloc(sizeof(char *) *(tokens+1));
 
-
-
-
-
   int i =0;
 
-  token_array[i] = strtok(str, " ");
+  token_array[i] = strtok(str, delim);
 
   for(i = 1; i< tokens; i++){
 
-    token_array[i] = strtok(NULL, " ");
-
-
+    token_array[i] = strtok(NULL, delim);
 
   }
 

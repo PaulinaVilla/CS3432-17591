@@ -30,43 +30,90 @@ void init_regs(){
  * You may expect that a single, properly formatted RISC-V instruction string will be passed
  * as a parameter to this function.
  */
-bool interpret(char* instr){
-	
-	return true;
-}
-
-
-long getOpcode(char * instr){
-	char **token_array = (char **)malloc(sizeof(char *) * (4 + 1));
-  // tokenize(instr);
-	token_array = tokenize(instr);
-	long opcode;
-   //print_all_tokens(tokenize(instr));
-	if((strcomp(token_array[0], "LW"))|| (strcomp(token_array[0], "ADDI"))){
-		opcode = "10000011";
-	}	
-	if(strcomp(token_array[0], "SW")){
-		opcode = "0100011";
-	}
-	if(strcomp(token_array[0], "ADD")){
-		opcode = "0110011";
-	}
-		
-	return opcode;
-
-//get register number from user
-//get value in that register and store it in the given register 
-		
-
-
+bool interpret(char* instr){ 
+    char **test = (char **)malloc(sizeof(char *) * (4));
+    test = tokenize(instr, " ");
+    char [] = sw; 
+	//add function
+    if (strcomp(test[0], "ADD") == 1) {
+        char **inString = (char**)malloc(sizeof(char*) * (1));
+	//get destination register
+        inString = tokenize(test[1], "X");
+        int dest_reg = atoi(inString[0]);
+	//get register 1
+	inString = tokenize(test[2], "X");
+	int reg1 = atoi(inString[0]);
+	//get register 2
+	inString = tokenize(test[3], "X");
+	int reg2 = atoi(inString[0]);
+	//add values of 2 registers
+	int sum = (long long int)reg[reg1] + (long long int)reg[reg2];
+	reg[dest_reg] = sum; 
    
+    	}else if(strcomp(test[0], "ADDI") == 1){
+		char **inString =(char**)malloc(sizeof(char*) * (4));
+		//get destination register
+		inString = tokenize(test[1], "X");
+		int dest_reg = atoi(inString[0]);
+		//get register
+		inString = tokenize(test[2], "X");
+		int reg1 = atoi(inString[0]);
+		//get constant value 
+		int constant = atoi(test[3]);
+		//add constant and value of register
+		int sum = (long long int)reg[reg1] + constant;
+		//store into destination register
+		reg[dest_reg] = sum;	
+		
+	
+	}else if (strcomp(test[0], "LW") == 1) {
+		char **inString =(char**)malloc(sizeof(char*) * (4));
+		//gets destination register
+		inString = tokenize(test[1],"X");
+		int dest_reg = atoi(inString[0]);
+		//gets token for offset and register
+		inString = tokenize(test[2], "(");
+		int offset = atoi(inString[0]); 
+		inString = tokenize(inString[1], ")");
+		inString = tokenize(inString[0], "X");
+		int regi = atoi(inString[0]);
+		//add register value and offset to get address
+		int32_t address = offset + regi; 
+		//read address from memory and store into dest_reg
+		int32_t read_value = read_address(address, "mem.txt");
+		reg[dest_reg] = (long long int)read_value;
+			
+	}else if (strcomp(test[0], sw) == 1) {
+		char **inString =(char**)malloc(sizeof(char*) * (4));
+		//gets destination register
+		inString = tokenize(test[1],"X");
+		int dest_reg = atoi(inString[0]);
+		//gets token for offset and register
+		inString = tokenize(test[2], "(");
+		int offset = atoi(inString[0]); 
+		inString = tokenize(inString[1], ")");
+		inString = tokenize(inString[0], "X");
+		int regi = atoi(inString[0]);
+		//add register value and offset to get address
+		int32_t address = regi + offset; 
+		//write data into address
+		int data_to_write = reg[dest_reg];
+		int32_t   write=write_address(data_to_write,address,"mem.txt");
+		printf("HEYYYYYY");
+		
+	}
+    return true;
+
 }
 
 
+
+
+//function to compare two given strings
 int strcomp(char *str1, char *str2){
 	int len1 =0; 
 	int len2 = 0;
-	//make for loop with couhnter for both and compare counters and then compare string
+
 	for(int i =0; *(str1+i)!='\0';i++){
 		len1++;
 	}
@@ -105,22 +152,47 @@ void write_read_demo(){
 	printf("Read address %lu (0x%lX): %lu (0x%lX)\n", address, address, read, read); // %lu -> format as an long-unsigned
 }
 
+void print_regs(){
+	int col_size = 10;
+	for(int i = 0; i < 8; i++){
+		printf("X%02i:%.*lld", i, col_size, (long long int) reg[i]);
+		printf(" X%02i:%.*lld", i+8, col_size, (long long int) reg[i+8]);
+		printf(" X%02i:%.*lld", i+16, col_size, (long long int) reg[i+16]);
+		printf(" X%02i:%.*lld\n", i+24, col_size, (long long int) reg[i+24]);
+	}
+}
+
+
 /**
  * Your code goes in the main
  *
  */
 int main(){
-	char name[] = "LW X7 1000(X5)";
-	printf("%ld\n", getOpcode(name));
-	//printf("%d\n", interpret(name)); 
 	// Do not write any code between init_regs
 	init_regs(); // DO NOT REMOVE THIS LINE
-	//char str1[] = "hey";
-	//char str2[] = "heey";
-	//printf("%d\n", strcomp(str1,str2));
+
+	print_regs();
 
 	// Below is a sample program to a write-read. Overwrite this with your own code.
-	write_read_demo();
-	
-        
+	//write_read_demo();
+
+	printf(" RV32 Interpreter.\nType RV32 instructions. Use upper-case letters and space as a delimiter.\nEnter 'EOF' character to end program\n");
+
+	char* instruction = malloc(1000 * sizeof(char));
+	bool is_null = false;
+	// fgets() returns null if EOF is reached.
+	is_null = fgets(instruction, 1000, stdin) == NULL;
+	while(!is_null){
+		interpret(instruction);
+		printf("\n");
+		print_regs();
+		printf("\n");
+
+		is_null = fgets(instruction, 1000, stdin) == NULL;
+	}
+
+	printf("Good bye!\n");
+
+	return 0;
 }
+

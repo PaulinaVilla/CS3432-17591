@@ -33,7 +33,6 @@ void init_regs(){
 bool interpret(char* instr){ 
     char **test = (char **)malloc(sizeof(char *) * (4));
     test = tokenize(instr, " ");
-    char [] = sw; 
 	//add function
     if (strcomp(test[0], "ADD") == 1) {
         char **inString = (char**)malloc(sizeof(char*) * (1));
@@ -50,6 +49,7 @@ bool interpret(char* instr){
 	int sum = (long long int)reg[reg1] + (long long int)reg[reg2];
 	reg[dest_reg] = sum; 
    
+	//ADDI function
     	}else if(strcomp(test[0], "ADDI") == 1){
 		char **inString =(char**)malloc(sizeof(char*) * (4));
 		//get destination register
@@ -65,7 +65,7 @@ bool interpret(char* instr){
 		//store into destination register
 		reg[dest_reg] = sum;	
 		
-	
+	//LOAD WORD
 	}else if (strcomp(test[0], "LW") == 1) {
 		char **inString =(char**)malloc(sizeof(char*) * (4));
 		//gets destination register
@@ -82,8 +82,9 @@ bool interpret(char* instr){
 		//read address from memory and store into dest_reg
 		int32_t read_value = read_address(address, "mem.txt");
 		reg[dest_reg] = (long long int)read_value;
-			
-	}else if (strcomp(test[0], sw) == 1) {
+	
+	//STORE WORD	
+	}else if (strcomp(test[0], "SW") == 1) {
 		char **inString =(char**)malloc(sizeof(char*) * (4));
 		//gets destination register
 		inString = tokenize(test[1],"X");
@@ -99,10 +100,9 @@ bool interpret(char* instr){
 		//write data into address
 		int data_to_write = reg[dest_reg];
 		int32_t   write=write_address(data_to_write,address,"mem.txt");
-		printf("HEYYYYYY");
 		
 	}
-    return true;
+       return true;
 
 }
 
@@ -123,11 +123,15 @@ int strcomp(char *str1, char *str2){
 	
 	if (len1 == len2){
 		for(int i =0; i< len1; i++){
-			if(*(str1+i) == *(str2+i)){
-				return 1;
+			if(*(str1+i) != *(str2+i)){
+				return 0;
 			}	
 		}
-	}return 0;
+	}
+	else{
+		return 0; 
+		}
+	return 1;
 	
 }
 

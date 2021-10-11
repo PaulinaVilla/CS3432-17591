@@ -31,48 +31,48 @@ void init_regs(){
  * as a parameter to this function.
  */
 bool interpret(char* instr){ 
-    char **test = (char **)malloc(sizeof(char *) * (4));
-    test = tokenize(instr, " ");
+    char **str = (char **)malloc(sizeof(char *) * (4));
+    str = tokenize(instr, " ");
 	//add function
-    if (strcomp(test[0], "ADD") == 1) {
+    if (strcomp(str[0], "ADD") == 1) {
         char **inString = (char**)malloc(sizeof(char*) * (1));
 	//get destination register
-        inString = tokenize(test[1], "X");
+        inString = tokenize(str[1], "X");
         int dest_reg = atoi(inString[0]);
 	//get register 1
-	inString = tokenize(test[2], "X");
+	inString = tokenize(str[2], "X");
 	int reg1 = atoi(inString[0]);
 	//get register 2
-	inString = tokenize(test[3], "X");
+	inString = tokenize(str[3], "X");
 	int reg2 = atoi(inString[0]);
 	//add values of 2 registers
 	int sum = (long long int)reg[reg1] + (long long int)reg[reg2];
 	reg[dest_reg] = sum; 
    
 	//ADDI function
-    	}else if(strcomp(test[0], "ADDI") == 1){
+    	}else if(strcomp(str[0], "ADDI") == 1){
 		char **inString =(char**)malloc(sizeof(char*) * (4));
 		//get destination register
-		inString = tokenize(test[1], "X");
+		inString = tokenize(str[1], "X");
 		int dest_reg = atoi(inString[0]);
 		//get register
-		inString = tokenize(test[2], "X");
+		inString = tokenize(str[2], "X");
 		int reg1 = atoi(inString[0]);
 		//get constant value 
-		int constant = atoi(test[3]);
+		int constant = atoi(str[3]);
 		//add constant and value of register
 		int sum = (long long int)reg[reg1] + constant;
 		//store into destination register
 		reg[dest_reg] = sum;	
 		
 	//LOAD WORD
-	}else if (strcomp(test[0], "LW") == 1) {
+	}else if (strcomp(str[0], "LW") == 1) {
 		char **inString =(char**)malloc(sizeof(char*) * (4));
 		//gets destination register
-		inString = tokenize(test[1],"X");
+		inString = tokenize(str[1],"X");
 		int dest_reg = atoi(inString[0]);
 		//gets token for offset and register
-		inString = tokenize(test[2], "(");
+		inString = tokenize(str[2], "(");
 		int offset = atoi(inString[0]); 
 		inString = tokenize(inString[1], ")");
 		inString = tokenize(inString[0], "X");
@@ -84,13 +84,13 @@ bool interpret(char* instr){
 		reg[dest_reg] = (long long int)read_value;
 	
 	//STORE WORD	
-	}else if (strcomp(test[0], "SW") == 1) {
+	}else if (strcomp(str[0], "SW") == 1) {
 		char **inString =(char**)malloc(sizeof(char*) * (4));
 		//gets destination register
-		inString = tokenize(test[1],"X");
+		inString = tokenize(str[1],"X");
 		int dest_reg = atoi(inString[0]);
 		//gets token for offset and register
-		inString = tokenize(test[2], "(");
+		inString = tokenize(str[2], "(");
 		int offset = atoi(inString[0]); 
 		inString = tokenize(inString[1], ")");
 		inString = tokenize(inString[0], "X");
